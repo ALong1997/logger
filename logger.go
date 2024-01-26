@@ -1,35 +1,39 @@
 package logger
 
+import (
+	"fmt"
+)
+
 func Debug(args ...interface{}) {
-	logger.Debug(args...)
+	logger.Debug(getPrefix(), args)
 }
 
 func Info(args ...interface{}) {
-	logger.Info(args...)
+	logger.Info(getPrefix(), args)
 }
 
 func Warn(args ...interface{}) {
-	logger.Warn(args...)
+	logger.Warn(getPrefix(), args)
 }
 
 func Error(args ...interface{}) {
-	logger.Error(args...)
+	logger.Error(getPrefix(), args)
 }
 
 func DebugF(format string, args ...interface{}) {
-	logger.Debugf(format, args...)
+	logger.Debugf(getPrefix(), fmt.Sprintf(format, args...))
 }
 
 func InfoF(format string, args ...interface{}) {
-	logger.Infof(format, args...)
+	logger.Infof(getPrefix(), fmt.Sprintf(format, args...))
 }
 
 func WarnF(format string, args ...interface{}) {
-	logger.Warnf(format, args...)
+	logger.Warnf(getPrefix(), fmt.Sprintf(format, args...))
 }
 
 func ErrorF(format string, args ...interface{}) {
-	logger.Errorf(format, args...)
+	logger.Errorf(getPrefix(), fmt.Sprintf(format, args...))
 }
 
 func Sync() error {

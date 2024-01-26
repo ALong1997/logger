@@ -1,8 +1,9 @@
 package logger
 
 import (
-	"go.uber.org/zap/zapcore"
 	"sync"
+
+	"go.uber.org/zap/zapcore"
 )
 
 type Config struct {
@@ -17,6 +18,9 @@ type Config struct {
 
 	// print to console
 	Console bool
+
+	// print GoroutineID
+	GoroutineID bool
 
 	once sync.Once
 }
