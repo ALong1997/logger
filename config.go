@@ -27,14 +27,15 @@ type Config struct {
 
 func DefaultConfig() *Config {
 	return &Config{
-		LogLevel:   zapcore.DebugLevel,
-		FilePath:   "/opt/log",
-		FileName:   "app.log",
-		MaxSize:    100,
-		MaxAge:     10,
-		MaxBackups: 10,
-		Compress:   false,
-		Console:    false,
+		LogLevel:    zapcore.DebugLevel,
+		FilePath:    "/opt/log",
+		FileName:    "app.log",
+		MaxSize:     100,
+		MaxAge:      10,
+		MaxBackups:  10,
+		Compress:    false,
+		Console:     false,
+		GoroutineID: false,
 	}
 }
 

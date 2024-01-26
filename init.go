@@ -1,12 +1,12 @@
 package logger
 
 import (
+	"os"
+	"path/filepath"
+
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	"gopkg.in/natefinch/lumberjack.v2"
-	"os"
-	"path/filepath"
-	"strings"
 )
 
 var (
@@ -53,7 +53,7 @@ func setPrefix(s string) {
 
 func getPrefix() string {
 	if goID {
-		return strings.TrimSpace("GoID:" + GoID() + " " + prefix)
+		return "GoID:" + GoID() + " " + prefix
 	} else {
 		return prefix
 	}
