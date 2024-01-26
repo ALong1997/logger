@@ -4,6 +4,7 @@ import (
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	"gopkg.in/natefinch/lumberjack.v2"
+	"os"
 	"path/filepath"
 )
 
@@ -27,11 +28,15 @@ func getEncoder() zapcore.Encoder {
 }
 
 func getLogWriter(c *Config) zapcore.WriteSyncer {
-	return zapcore.AddSync(&lumberjack.Logger{
+	fileWriter := zapcore.AddSync(&lumberjack.Logger{
 		Filename:   filepath.Join(c.FilePath, c.FileName),
 		MaxAge:     c.MaxAge,
 		MaxSize:    c.MaxSize,
 		MaxBackups: c.MaxBackups,
 		Compress:   c.Compress,
 	})
+	if c.Console {
+		return zapcore.NewMultiWriteSyncer(fileWriter, zapcore.Lock(os.Stdout))
+	}
+	return fileWriter
 }

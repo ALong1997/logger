@@ -5,8 +5,8 @@ import (
 	"sync"
 )
 
-// Config reference lumberjack.Logger
 type Config struct {
+	// reference lumberjack.Logger
 	LogLevel   zapcore.Level
 	FilePath   string
 	FileName   string
@@ -14,6 +14,9 @@ type Config struct {
 	MaxAge     int
 	MaxBackups int
 	Compress   bool
+
+	// print to console
+	Console bool
 
 	once sync.Once
 }
@@ -27,6 +30,7 @@ func DefaultConfig() *Config {
 		MaxAge:     10,
 		MaxBackups: 10,
 		Compress:   false,
+		Console:    false,
 	}
 }
 
