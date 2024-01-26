@@ -11,8 +11,7 @@ import (
 var (
 	logger *zap.SugaredLogger
 
-	goID   bool
-	prefix string // use getPrefix() to read it
+	goID bool
 )
 
 func Init(c *Config) {
@@ -43,16 +42,4 @@ func getLogWriter(c *Config) zapcore.WriteSyncer {
 		return zapcore.NewMultiWriteSyncer(fileWriter, zapcore.Lock(os.Stdout))
 	}
 	return fileWriter
-}
-
-func setPrefix(s string) {
-	prefix = s
-}
-
-func getPrefix() string {
-	if goID {
-		return "GoID:" + GoID() + " " + prefix
-	} else {
-		return prefix
-	}
 }
