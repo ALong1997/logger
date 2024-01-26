@@ -21,19 +21,19 @@ func Error(args ...interface{}) {
 }
 
 func DebugF(format string, args ...interface{}) {
-	logger.Debugf(getPrefix(), fmt.Sprintf(format, args...))
+	logger.Debug(getPrefix(), fmt.Sprintf(format, args...))
 }
 
 func InfoF(format string, args ...interface{}) {
-	logger.Infof(getPrefix(), fmt.Sprintf(format, args...))
+	logger.Info(getPrefix(), fmt.Sprintf(format, args...))
 }
 
 func WarnF(format string, args ...interface{}) {
-	logger.Warnf(getPrefix(), fmt.Sprintf(format, args...))
+	logger.Warn(getPrefix(), fmt.Sprintf(format, args...))
 }
 
 func ErrorF(format string, args ...interface{}) {
-	logger.Errorf(getPrefix(), fmt.Sprintf(format, args...))
+	logger.Error(getPrefix(), fmt.Sprintf(format, args...))
 }
 
 func Sync() error {

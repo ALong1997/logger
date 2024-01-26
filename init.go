@@ -1,12 +1,11 @@
 package logger
 
 import (
-	"os"
-	"path/filepath"
-
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	"gopkg.in/natefinch/lumberjack.v2"
+	"os"
+	"path/filepath"
 )
 
 var (
@@ -21,7 +20,6 @@ func Init(c *Config) {
 		c.check()
 		core := zapcore.NewCore(getEncoder(), getLogWriter(c), c.LogLevel)
 		logger = zap.New(core, zap.AddCaller(), zap.AddCallerSkip(1)).Sugar()
-
 		goID = c.GoroutineID
 	})
 }
