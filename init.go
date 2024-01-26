@@ -1,0 +1,37 @@
+package logger
+
+import (
+	"go.uber.org/zap"
+	"go.uber.org/zap/zapcore"
+	"gopkg.in/natefinch/lumberjack.v2"
+	"path/filepath"
+)
+
+var (
+	logger *zap.SugaredLogger
+)
+
+func Init(c *Config) {
+	c.once.Do(func() {
+		c.check()
+		core := zapcore.NewCore(getEncoder(), getLogWriter(c), c.LogLevel)
+		logger = zap.New(core, zap.AddCaller(), zap.AddCallerSkip(1)).Sugar()
+	})
+}
+
+func getEncoder() zapcore.Encoder {
+	encoderConfig := zap.NewProductionEncoderConfig()
+	encoderConfig.EncodeTime = zapcore.ISO8601TimeEncoder
+	encoderConfig.EncodeLevel = zapcore.CapitalLevelEncoder
+	return zapcore.NewConsoleEncoder(encoderConfig)
+}
+
+func getLogWriter(c *Config) zapcore.WriteSyncer {
+	return zapcore.AddSync(&lumberjack.Logger{
+		Filename:   filepath.Join(c.FilePath, c.FileName),
+		MaxAge:     c.MaxAge,
+		MaxSize:    c.MaxSize,
+		MaxBackups: c.MaxBackups,
+		Compress:   c.Compress,
+	})
+}
