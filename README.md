@@ -39,6 +39,8 @@ $ go get -u https://github.com/ALong1997/logger
 package main
 
 import (
+	"context"
+	
 	"github.com/ALong1997/logger"
 )
 
@@ -49,6 +51,11 @@ func main() {
 	s := "Hello World!"
 	logger.Debug(s)
 	logger.ErrorF("%s", s)
+
+	traceID := "123456"
+	ctx := context.WithValue(context.Background(), logger.TraceIDKey, traceID)
+	logger.InfoWithContext(ctx, s)
+	logger.WarnFWithContext(ctx, "%v", s)
 
 	if err := logger.Sync(); err != nil {
 		logger.Error(err)
