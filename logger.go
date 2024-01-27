@@ -5,15 +5,15 @@ import (
 )
 
 func getLogger() *zap.SugaredLogger {
-	if withGoID {
-		return logger.With(zap.String(goIDKey, GoID()))
+	if globalLogger.withGoID {
+		return globalLogger.With(zap.String(goIDKey, GoID()))
 	}
 
-	return logger
+	return globalLogger.SugaredLogger
 }
 
 func Sync() error {
-	return logger.Sync()
+	return globalLogger.Sync()
 }
 
 func Debug(args ...interface{}) {

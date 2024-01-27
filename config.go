@@ -1,8 +1,6 @@
 package logger
 
 import (
-	"sync"
-
 	"go.uber.org/zap/zapcore"
 )
 
@@ -17,8 +15,6 @@ type (
 		GoroutineID bool // output GoroutineID
 
 		FileConfig FileConfig // log file
-
-		once sync.Once
 	}
 
 	// FileConfig reference lumberjack.Logger
@@ -39,7 +35,6 @@ func DefaultConfig() *Config {
 		Console:     false,
 		GoroutineID: false,
 		FileConfig:  DefaultFileConfig(),
-		once:        sync.Once{},
 	}
 }
 

@@ -6,20 +6,29 @@ import (
 	"gopkg.in/natefinch/lumberjack.v2"
 	"os"
 	"path/filepath"
+	"sync"
 )
 
-var (
-	logger *zap.SugaredLogger
+type logger struct {
+	*zap.SugaredLogger
 
 	withGoID bool
-)
+
+	once sync.Once
+}
+
+var globalLogger *logger
+
+func init() {
+	globalLogger = &logger{}
+}
 
 func Init(c *Config) {
-	c.once.Do(func() {
-		c.check()
+	c.check()
+	globalLogger.once.Do(func() {
 		core := zapcore.NewCore(getEncoder(c.JsonEncoder), getLogWriter(c.FileConfig, c.Console), c.LogLevel)
-		logger = zap.New(core, zap.AddCaller(), zap.AddCallerSkip(1)).Sugar()
-		withGoID = c.GoroutineID
+		globalLogger.SugaredLogger = zap.New(core, zap.AddCaller(), zap.AddCallerSkip(1)).Sugar()
+		globalLogger.withGoID = c.GoroutineID
 	})
 }
 
