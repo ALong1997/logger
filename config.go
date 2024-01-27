@@ -35,9 +35,11 @@ type (
 func DefaultConfig() *Config {
 	return &Config{
 		JsonEncoder: false,
-		FileConfig:  DefaultFileConfig(),
+		LogLevel:    zapcore.DebugLevel,
 		Console:     false,
 		GoroutineID: false,
+		FileConfig:  DefaultFileConfig(),
+		once:        sync.Once{},
 	}
 }
 

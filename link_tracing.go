@@ -8,9 +8,10 @@ import (
 const TraceIDKey = "trace_id"
 
 func getLoggerWithContext(ctx context.Context) *zap.SugaredLogger {
-	traceID, ok := ctx.Value(TraceIDKey).(string)
-	if ok {
-		return getLogger().With(zap.String(TraceIDKey, traceID))
+	if ctx != nil {
+		if traceID, ok := ctx.Value(TraceIDKey).(string); ok {
+			return getLogger().With(zap.String(TraceIDKey, traceID))
+		}
 	}
 
 	return getLogger()
