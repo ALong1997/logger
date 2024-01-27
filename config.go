@@ -6,36 +6,49 @@ import (
 	"go.uber.org/zap/zapcore"
 )
 
-type Config struct {
-	// reference lumberjack.Logger
-	LogLevel   zapcore.Level
-	FilePath   string
-	FileName   string
-	MaxSize    int
-	MaxAge     int
-	MaxBackups int
-	Compress   bool
+type (
+	Config struct {
+		JsonEncoder bool // json or console
 
-	// print to console
-	Console bool
+		LogLevel zapcore.Level // log level
 
-	// print GoroutineID
-	GoroutineID bool
+		Console bool // print to console
 
-	once sync.Once
-}
+		GoroutineID bool // print GoroutineID
+
+		FileConfig FileConfig // log file
+
+		once sync.Once
+	}
+
+	// FileConfig reference lumberjack.Logger
+	FileConfig struct {
+		FilePath   string
+		FileName   string
+		MaxSize    int
+		MaxAge     int
+		MaxBackups int
+		Compress   bool
+	}
+)
 
 func DefaultConfig() *Config {
 	return &Config{
-		LogLevel:    zapcore.DebugLevel,
-		FilePath:    "/opt/log",
-		FileName:    "app.log",
-		MaxSize:     100,
-		MaxAge:      10,
-		MaxBackups:  10,
-		Compress:    false,
+		JsonEncoder: false,
+		FileConfig:  DefaultFileConfig(),
 		Console:     false,
 		GoroutineID: false,
+	}
+}
+
+func DefaultFileConfig() FileConfig {
+	return FileConfig{
+		FilePath:   "/opt/log",
+		FileName:   "app.log",
+		MaxSize:    100,
+		MaxAge:     10,
+		MaxBackups: 10,
+		Compress:   false,
 	}
 }
 
@@ -51,23 +64,34 @@ func (c *Config) check() {
 		c.LogLevel = defaultConfig.LogLevel
 	}
 
-	if len(c.FilePath) == 0 {
-		c.FilePath = defaultConfig.FilePath
+	c.FileConfig.check()
+}
+
+// check use default field to replace invalid field
+func (fc *FileConfig) check() {
+	if fc == nil {
+		panic("invalid config")
 	}
 
-	if len(c.FileName) == 0 {
-		c.FileName = defaultConfig.FileName
+	defaultConfig := DefaultFileConfig()
+
+	if len(fc.FilePath) == 0 {
+		fc.FilePath = defaultConfig.FilePath
 	}
 
-	if c.MaxSize <= 0 {
-		c.MaxSize = defaultConfig.MaxSize
+	if len(fc.FileName) == 0 {
+		fc.FileName = defaultConfig.FileName
 	}
 
-	if c.MaxAge <= 0 {
-		c.MaxAge = defaultConfig.MaxAge
+	if fc.MaxSize <= 0 {
+		fc.MaxSize = defaultConfig.MaxSize
 	}
 
-	if c.MaxBackups <= 0 {
-		c.MaxBackups = defaultConfig.MaxBackups
+	if fc.MaxAge <= 0 {
+		fc.MaxAge = defaultConfig.MaxAge
+	}
+
+	if fc.MaxBackups <= 0 {
+		fc.MaxBackups = defaultConfig.MaxBackups
 	}
 }
