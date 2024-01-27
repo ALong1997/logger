@@ -50,7 +50,7 @@ func getLogWriter(fc FileConfig, console bool) zapcore.WriteSyncer {
 
 func getLogger() *zap.SugaredLogger {
 	if goID {
-		return logger.With(zap.String("GoID", GoID()))
+		return logger.With(zap.String(goIDKey, GoID()))
 	} else {
 		return logger
 	}

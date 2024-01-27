@@ -6,8 +6,10 @@ import (
 	"strings"
 )
 
-// l = len("goroutine ")
-const l = 10
+const (
+	l       = 10 // l = len("goroutine ")
+	goIDKey = "GoID"
+)
 
 func GoID() string {
 	var buf [32]byte
