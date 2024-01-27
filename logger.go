@@ -1,5 +1,21 @@
 package logger
 
+import (
+	"go.uber.org/zap"
+)
+
+func getLogger() *zap.SugaredLogger {
+	if withGoID {
+		return logger.With(zap.String(goIDKey, GoID()))
+	}
+
+	return logger
+}
+
+func Sync() error {
+	return logger.Sync()
+}
+
 func Debug(args ...interface{}) {
 	getLogger().Debug(args)
 }
@@ -30,8 +46,4 @@ func WarnF(format string, args ...interface{}) {
 
 func ErrorF(format string, args ...interface{}) {
 	getLogger().Errorf(format, args)
-}
-
-func Sync() error {
-	return logger.Sync()
 }

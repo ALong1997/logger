@@ -12,9 +12,9 @@ type (
 
 		LogLevel zapcore.Level // log level
 
-		Console bool // print to console
+		Console bool // output to console
 
-		GoroutineID bool // print GoroutineID
+		GoroutineID bool // output GoroutineID
 
 		FileConfig FileConfig // log file
 

@@ -1,19 +1,17 @@
 # Logger
 
 Logger is a logging package based on [zap](https://github.com/uber-go/zap)'s SugaredLogger and [lumberjack](https://github.com/natefinch/lumberjack).
-It supports log file rotation and provides some common log level functions.
+It supports **rolling log file**, **json or console encoder**, **console output**,
+**goroutine id**, **link tracing** and provides **some common log level functions**.
 
 ## Convenience functions
 
-* Debug
-* Info
-* Warn
-* Error
-* DebugF
-* InfoF
-* WarnF
-* ErrorF
 * Sync
+
+* Debug(F)(WithContext)
+* Info(F)(WithContext)
+* Warn(F)(WithContext)
+* Error(F)(WithContext)
 
 ## Getting started
 

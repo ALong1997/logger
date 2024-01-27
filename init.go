@@ -11,7 +11,7 @@ import (
 var (
 	logger *zap.SugaredLogger
 
-	goID bool
+	withGoID bool
 )
 
 func Init(c *Config) {
@@ -19,7 +19,7 @@ func Init(c *Config) {
 		c.check()
 		core := zapcore.NewCore(getEncoder(c.JsonEncoder), getLogWriter(c.FileConfig, c.Console), c.LogLevel)
 		logger = zap.New(core, zap.AddCaller(), zap.AddCallerSkip(1)).Sugar()
-		goID = c.GoroutineID
+		withGoID = c.GoroutineID
 	})
 }
 
@@ -46,12 +46,4 @@ func getLogWriter(fc FileConfig, console bool) zapcore.WriteSyncer {
 		return zapcore.NewMultiWriteSyncer(fileWriter, zapcore.Lock(os.Stdout))
 	}
 	return fileWriter
-}
-
-func getLogger() *zap.SugaredLogger {
-	if goID {
-		return logger.With(zap.String(goIDKey, GoID()))
-	} else {
-		return logger
-	}
 }
